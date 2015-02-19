@@ -133,6 +133,8 @@ strokeDashed = do
     "stroke-dasharray" -: "8,5"
     "stroke-width" -: "2px"
 
+
+-- make this a dictionary and make a map over the dictionary 
 theoryDark = "#B1C8D1"
 coreDark = "#C9C9C9"
 seDark = "#E68080"
