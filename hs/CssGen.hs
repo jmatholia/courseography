@@ -136,6 +136,16 @@ strokeDashed = do
 
 
 -- make this a dictionary and make a map over the dictionary 
+nodeColours = [("theory", "#B1C8D1"),
+                ("core", "#C9C9C9"),
+                ("se", "#E68080"),
+                ("systems", "#C285FF"),
+                ("graphics", "#66A366"),
+                ("dbweb", "#C42B97"),
+                ("num", "#B8FF70"),
+                ("ai", "#80B2FF"),
+                ("hci", "#91F27A")]
+
 theoryDark = "#B1C8D1"
 coreDark = "#C9C9C9"
 seDark = "#E68080"
@@ -145,8 +155,8 @@ dbwebDark = "#C42B97"
 numDark = "#B8FF70"
 aiDark = "#80B2FF"
 hciDark = "#91F27A"
-titleColour = "#072D68"
 
+titleColour = "#072D68"
 lightGrey = "#CCCCCC"
 
 nodeCSS = "g" ? do
@@ -195,6 +205,12 @@ nodeCSS = "g" ? do
         "data-active" @= "unlit" & do
             wideStroke
             strokeRed
+
+        Prelude.map (\pair -> ("data-group" @= (fst pair) & do 
+                        "rect" <? do 
+                            fill $ snd pair))
+                    nodeColours
+
         "data-group" @= "theory" & do
             "rect" <? do
                 fill theoryDark
@@ -222,6 +238,8 @@ nodeCSS = "g" ? do
         "data-group" @= "hci" & do
             "rect" <? do
                 fill hciDark
+
+
         -- Since groups are missing right now
         "rect" <? do
             stroke "black"
