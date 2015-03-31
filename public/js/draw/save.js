@@ -63,14 +63,16 @@ function saveGraph() {
 		var rectAndText = getRect();
 		var paths = getPath();
 		// make request
-		$.ajax({
+		var jqXHR = $.ajax({
 			url: 'save',
 			async: false,
 			method: 'get',
-			data: 'objs=' + JSON.stringify({'graph': {'gId': 100, 'title': savedAs}, 
+			//contentType:'application/json',
+			dataType: 'JSON',
+			data: 'objs+' JSON.stringify({x: 5, y: 5}/*{'graph': {'gId': 100, 'title': savedAs}, 
 											'rects': rectAndText.rects, 
 											'texts': rectAndText.texts,
-											'paths': paths}),
+											'paths': paths}*/),
 			success: function () { console.log('Ajax request sent!'); },
 			error: function (xhr, status, error) {
 						console.log('Error with Ajax request!');
@@ -78,6 +80,8 @@ function saveGraph() {
 						console.log(error);
 					}
 		});
+		console.log(JSON.stringify({x: 5, y: 5});
+		console.log(jqXHR.responseText);
 
 		removeSaveModal();
 	}
@@ -103,7 +107,6 @@ Text
     text String
     deriving Show
 */
-
 function getRect() {
 	'use strict';
 
