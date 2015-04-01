@@ -227,3 +227,8 @@ saveButtonCSS = do
         width (pct 40)
         "margin" -: "15px auto 5px auto"
         padding0
+    "#save-modal-button" ? do
+        "display" -: "inline"
+        width (pct 50)
+        padding (px 2) (px 10) (px 2) (px 10)
+        margin (px 2) (px 5) (px 2) (px 10)
