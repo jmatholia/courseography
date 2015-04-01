@@ -26,6 +26,7 @@ drawStyles = do
     scrollBar
     regionCSS 
     finishRegionCSS
+    saveButtonCSS
 
 {- The wrapping around the canvas elements. -}
 mainCSS = "#main" ? do
@@ -220,3 +221,9 @@ finishRegionCSS = "#finish-region" ? do
     backgroundColor $ parse "#DCDCDC"
     -- border solid (px 2) black
     border solid (px 2) $ parse "#008080"
+
+saveButtonCSS = do
+    "#save" ? do
+        width (pct 40)
+        "margin" -: "15px auto 5px auto"
+        padding0
