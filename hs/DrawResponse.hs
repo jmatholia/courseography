@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, DeriveDataTypeable, DeriveGeneric  #-}
 
 module DrawResponse where
 
@@ -9,6 +9,25 @@ import Happstack.Server
 import MakeElements
 import MasterTemplate
 import Scripts
+
+import qualified Data.ByteString.Lazy.Char8 as L
+import Happstack.Server.Types
+import Control.Monad.IO.Class (liftIO)
+import Data.Aeson as Aeson
+import Data.Maybe
+import Database.Tables
+-- import SvgParsing.parser -- commandline arguments?
+import GHC.Generics
+
+import Data.Data (Data, Typeable)
+
+-- easiest to serialize/deserialize objects
+data Unit = Unit { x :: Int, y :: Int } deriving (Show, Eq, Data, Typeable, Generic)
+
+instance FromJSON Unit
+instance ToJSON Unit
+instance FromJSON Units
+instance ToJSON Units
 
 drawResponse :: ServerPart Response
 drawResponse =
@@ -46,3 +65,20 @@ modePanel = createTag H.div "side-panel-wrap" "" $ do
     createTag H.div "change-mode" "mode" "SELECT/MOVE (m)" 
     createTag H.div "erase-mode" "mode" "ERASE (e)"
     createTag H.div "save" "button" "SAVE (s)"
+
+
+-- code from http://stackoverflow.com/questions/8865793/how-to-create-json-rest-api-with-happstack-json-body
+-- put this function in a library somewhere
+getBody :: ServerPart L.ByteString
+getBody = do
+    req  <- askRq 
+    body <- liftIO $ takeRequestBody req 
+    case body of 
+        Just rqbody -> return . unBody $ rqbody 
+        Nothing     -> return "" 
+
+save :: ServerPart Response
+save = do
+    body <- getBody -- it's a ByteString
+    let unit = fromJust $ Aeson.decode body :: Unit-- how to parse json
+    ok $ toResponse $ Aeson.encode unit -- how to send json back. 
